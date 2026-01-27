@@ -21,27 +21,27 @@ struct SettingsView: View {
             }
 
             Section {
-                SecureField("Bearer Token (optional for localhost)", text: $token)
+                SecureField("Gateway Token", text: $token)
                     .textFieldStyle(.roundedBorder)
 
-                Text("Leave empty when connecting to localhost")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Find your gateway token in:")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Text("~/.clawdbot/clawdbot.json → gateway.auth.token")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .textSelection(.enabled)
+                }
             } header: {
                 Text("Authentication")
             }
 
             Section {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("The widget connects directly to your Moltbot instance using WebSocket RPC to fetch cron job statistics.")
+                    Text("The widget connects to your Moltbot instance using WebSocket RPC to fetch cron job statistics.")
 
                     Text("Default Moltbot gateway runs on ws://127.0.0.1:18789")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-
-                    Divider()
-
-                    Text("Note: Widget uses the same default settings. For custom configurations, the widget will use localhost:18789.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -50,7 +50,7 @@ struct SettingsView: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 400, height: 350)
+        .frame(width: 450, height: 400)
         .padding()
     }
 }

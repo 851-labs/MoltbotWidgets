@@ -6,6 +6,8 @@ enum MoltbotAPIError: LocalizedError {
     case invalidResponse
     case apiError(String)
     case timeout
+    case protocolError(String)
+    case authenticationRequired
 
     var errorDescription: String? {
         switch self {
@@ -19,6 +21,10 @@ enum MoltbotAPIError: LocalizedError {
             return message
         case .timeout:
             return "Connection timed out"
+        case .protocolError(let message):
+            return "Protocol error: \(message)"
+        case .authenticationRequired:
+            return "Authentication token required"
         }
     }
 }
@@ -30,34 +36,13 @@ struct CronStatusResponse: Codable {
     let nextWakeAtMs: Int?
 }
 
-struct RPCResponse<T: Codable>: Codable {
-    let ok: Bool
-    let payload: T?
-    let error: RPCError?
-}
-
-struct RPCError: Codable {
-    let code: String
-    let message: String
-}
-
-struct RPCRequest: Codable {
-    let id: String
-    let method: String
-    let params: [String: String]?
-
-    init(method: String, params: [String: String]? = nil) {
-        self.id = UUID().uuidString
-        self.method = method
-        self.params = params
-    }
-}
-
 actor MoltbotAPI {
     private let host: String
     private let port: String
     private let token: String?
     private let useSecure: Bool
+
+    private static let protocolVersion = 3
 
     init(host: String, port: String, token: String?, useSecure: Bool = false) {
         self.host = host
@@ -74,59 +59,166 @@ actor MoltbotAPI {
 
         return try await withCheckedThrowingContinuation { continuation in
             var request = URLRequest(url: url)
-            request.timeoutInterval = 10
-
-            if let token = token, !token.isEmpty {
-                request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-            }
+            request.timeoutInterval = 15
 
             let session = URLSession(configuration: .default)
             let webSocketTask = session.webSocketTask(with: request)
 
             webSocketTask.resume()
 
-            let rpcRequest = RPCRequest(method: "cron.status")
-
             Task {
                 do {
-                    let encoder = JSONEncoder()
-                    let requestData = try encoder.encode(rpcRequest)
-                    guard let requestString = String(data: requestData, encoding: .utf8) else {
-                        webSocketTask.cancel(with: .normalClosure, reason: nil)
-                        continuation.resume(throwing: MoltbotAPIError.invalidResponse)
-                        return
+                    var connectRequestId: String?
+                    var cronRequestId: String?
+                    var connectSucceeded = false
+                    var cronResponse: CronStatusResponse?
+                    var attempts = 0
+                    let maxAttempts = 20
+
+                    while attempts < maxAttempts {
+                        attempts += 1
+                        let message = try await webSocketTask.receive()
+
+                        switch message {
+                        case .string(let text):
+                            guard let data = text.data(using: .utf8),
+                                  let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+                                continue
+                            }
+
+                            let messageType = json["type"] as? String
+
+                            // Handle events
+                            if messageType == "event" {
+                                let event = json["event"] as? String
+
+                                if event == "connect.challenge" {
+                                    // Send connect request with auth token
+                                    connectRequestId = UUID().uuidString
+
+                                    var connectParams: [String: Any] = [
+                                        "minProtocol": Self.protocolVersion,
+                                        "maxProtocol": Self.protocolVersion,
+                                        "client": [
+                                            "id": "gateway-client",
+                                            "version": "1.0.0",
+                                            "platform": "darwin",
+                                            "mode": "backend"
+                                        ],
+                                        "caps": [],
+                                        "role": "operator",
+                                        "scopes": ["operator.read"]
+                                    ]
+
+                                    // Add auth token if provided
+                                    if let token = self.token, !token.isEmpty {
+                                        connectParams["auth"] = ["token": token]
+                                    }
+
+                                    let connectRequest: [String: Any] = [
+                                        "type": "req",
+                                        "id": connectRequestId!,
+                                        "method": "connect",
+                                        "params": connectParams
+                                    ]
+
+                                    let connectData = try JSONSerialization.data(withJSONObject: connectRequest)
+                                    guard let connectString = String(data: connectData, encoding: .utf8) else {
+                                        webSocketTask.cancel(with: .normalClosure, reason: nil)
+                                        continuation.resume(throwing: MoltbotAPIError.invalidResponse)
+                                        return
+                                    }
+
+                                    try await webSocketTask.send(.string(connectString))
+                                }
+                                continue
+                            }
+
+                            // Handle responses
+                            if messageType == "res" {
+                                let responseId = json["id"] as? String
+                                let ok = json["ok"] as? Bool ?? false
+
+                                // Connect response
+                                if responseId == connectRequestId {
+                                    if ok {
+                                        connectSucceeded = true
+
+                                        // Send cron.status request
+                                        cronRequestId = UUID().uuidString
+                                        let cronRequest: [String: Any] = [
+                                            "type": "req",
+                                            "id": cronRequestId!,
+                                            "method": "cron.status",
+                                            "params": [String: Any]()
+                                        ]
+
+                                        let cronData = try JSONSerialization.data(withJSONObject: cronRequest)
+                                        guard let cronString = String(data: cronData, encoding: .utf8) else {
+                                            webSocketTask.cancel(with: .normalClosure, reason: nil)
+                                            continuation.resume(throwing: MoltbotAPIError.invalidResponse)
+                                            return
+                                        }
+
+                                        try await webSocketTask.send(.string(cronString))
+                                    } else {
+                                        // Connect failed
+                                        let error = json["error"] as? [String: Any]
+                                        let code = error?["code"] as? String ?? ""
+                                        let message = error?["message"] as? String ?? "Unknown error"
+
+                                        webSocketTask.cancel(with: .normalClosure, reason: nil)
+
+                                        if code == "NOT_PAIRED" || message.contains("device identity") || message.contains("unauthorized") {
+                                            continuation.resume(throwing: MoltbotAPIError.authenticationRequired)
+                                        } else {
+                                            continuation.resume(throwing: MoltbotAPIError.apiError(message))
+                                        }
+                                        return
+                                    }
+                                }
+
+                                // Cron status response
+                                if responseId == cronRequestId {
+                                    if ok, let payload = json["payload"] as? [String: Any] {
+                                        let enabled = payload["enabled"] as? Bool ?? false
+                                        let storePath = payload["storePath"] as? String ?? ""
+                                        let jobs = payload["jobs"] as? Int ?? 0
+                                        let nextWakeAtMs = payload["nextWakeAtMs"] as? Int
+
+                                        cronResponse = CronStatusResponse(
+                                            enabled: enabled,
+                                            storePath: storePath,
+                                            jobs: jobs,
+                                            nextWakeAtMs: nextWakeAtMs
+                                        )
+                                    } else {
+                                        let error = json["error"] as? [String: Any]
+                                        let message = error?["message"] as? String ?? "Failed to get cron status"
+                                        webSocketTask.cancel(with: .normalClosure, reason: nil)
+                                        continuation.resume(throwing: MoltbotAPIError.apiError(message))
+                                        return
+                                    }
+                                }
+                            }
+
+                            // Check if we have the response
+                            if let response = cronResponse {
+                                webSocketTask.cancel(with: .normalClosure, reason: nil)
+                                continuation.resume(returning: response)
+                                return
+                            }
+
+                        case .data:
+                            continue
+                        @unknown default:
+                            continue
+                        }
                     }
-
-                    try await webSocketTask.send(.string(requestString))
-
-                    let message = try await webSocketTask.receive()
 
                     webSocketTask.cancel(with: .normalClosure, reason: nil)
+                    continuation.resume(throwing: MoltbotAPIError.timeout)
 
-                    switch message {
-                    case .string(let text):
-                        guard let data = text.data(using: .utf8) else {
-                            continuation.resume(throwing: MoltbotAPIError.invalidResponse)
-                            return
-                        }
-
-                        let decoder = JSONDecoder()
-                        let response = try decoder.decode(RPCResponse<CronStatusResponse>.self, from: data)
-
-                        if response.ok, let payload = response.payload {
-                            continuation.resume(returning: payload)
-                        } else if let error = response.error {
-                            continuation.resume(throwing: MoltbotAPIError.apiError(error.message))
-                        } else {
-                            continuation.resume(throwing: MoltbotAPIError.invalidResponse)
-                        }
-
-                    case .data:
-                        continuation.resume(throwing: MoltbotAPIError.invalidResponse)
-
-                    @unknown default:
-                        continuation.resume(throwing: MoltbotAPIError.invalidResponse)
-                    }
                 } catch let error as MoltbotAPIError {
                     webSocketTask.cancel(with: .normalClosure, reason: nil)
                     continuation.resume(throwing: error)

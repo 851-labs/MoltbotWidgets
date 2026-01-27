@@ -14,6 +14,7 @@ struct ContentView: View {
         case unknown
         case connected
         case disconnected
+        case authRequired
         case error(String)
 
         var color: Color {
@@ -21,6 +22,7 @@ struct ContentView: View {
             case .unknown: return .gray
             case .connected: return .green
             case .disconnected: return .orange
+            case .authRequired: return .yellow
             case .error: return .red
             }
         }
@@ -30,6 +32,7 @@ struct ContentView: View {
             case .unknown: return "Unknown"
             case .connected: return "Connected"
             case .disconnected: return "Disconnected"
+            case .authRequired: return "Token Required"
             case .error(let msg): return "Error: \(msg)"
             }
         }
@@ -63,6 +66,12 @@ struct ContentView: View {
                     Text("Host: \(host):\(port)")
                         .font(.caption)
                         .foregroundStyle(.secondary)
+
+                    if case .authRequired = connectionStatus {
+                        Text("Enter your gateway token in Settings (Cmd+,)")
+                            .font(.caption)
+                            .foregroundStyle(.orange)
+                    }
 
                     if let status = cronStatus {
                         Divider()
@@ -100,7 +109,7 @@ struct ContentView: View {
                 .multilineTextAlignment(.center)
         }
         .padding(30)
-        .frame(width: 400, height: 400)
+        .frame(width: 400, height: 450)
         .onAppear {
             testConnection()
         }
@@ -109,6 +118,7 @@ struct ContentView: View {
     private func testConnection() {
         isLoading = true
         connectionStatus = .unknown
+        cronStatus = nil
 
         Task {
             do {
@@ -117,6 +127,11 @@ struct ContentView: View {
                 await MainActor.run {
                     cronStatus = status
                     connectionStatus = .connected
+                    isLoading = false
+                }
+            } catch MoltbotAPIError.authenticationRequired {
+                await MainActor.run {
+                    connectionStatus = .authRequired
                     isLoading = false
                 }
             } catch let error as MoltbotAPIError {

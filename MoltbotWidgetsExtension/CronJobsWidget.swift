@@ -44,12 +44,13 @@ struct CronJobsProvider: TimelineProvider {
     }
 
     private func fetchCronStatus() async -> CronJobsEntry {
-        // Widget uses default localhost settings
-        // For production, you could use App Groups to share settings with the main app
+        // Default settings
         let host = "127.0.0.1"
         let port = "18789"
-        let token: String? = nil
         let useSecure = false
+
+        // Try to read token from moltbot config file
+        let token = readGatewayToken()
 
         let api = MoltbotAPI(host: host, port: port, token: token, useSecure: useSecure)
 
@@ -63,6 +64,14 @@ struct CronJobsProvider: TimelineProvider {
                 nextWakeAt: nextWake,
                 error: nil
             )
+        } catch MoltbotAPIError.authenticationRequired {
+            return CronJobsEntry(
+                date: .now,
+                jobCount: 0,
+                isEnabled: false,
+                nextWakeAt: nil,
+                error: "Token required - configure in app"
+            )
         } catch {
             return CronJobsEntry(
                 date: .now,
@@ -72,6 +81,22 @@ struct CronJobsProvider: TimelineProvider {
                 error: error.localizedDescription
             )
         }
+    }
+
+    private func readGatewayToken() -> String? {
+        // Try to read token from moltbot config file
+        let homeDir = FileManager.default.homeDirectoryForCurrentUser
+        let configPath = homeDir.appendingPathComponent(".clawdbot/clawdbot.json")
+
+        guard let data = try? Data(contentsOf: configPath),
+              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let gateway = json["gateway"] as? [String: Any],
+              let auth = gateway["auth"] as? [String: Any],
+              let token = auth["token"] as? String else {
+            return nil
+        }
+
+        return token
     }
 }
 
@@ -96,7 +121,7 @@ struct CronJobsWidgetEntryView: View {
                 Image(systemName: "exclamationmark.triangle.fill")
                     .font(.system(size: 32))
                     .foregroundStyle(.orange)
-                Text("Connection Error")
+                Text(error.contains("Token") ? "Auth Required" : "Error")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             } else {
@@ -168,9 +193,10 @@ struct CronJobsWidgetEntryView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             } else {
                 VStack(alignment: .leading, spacing: 8) {
-                    Label("Connection Error", systemImage: "exclamationmark.triangle.fill")
+                    Label(entry.error?.contains("Token") == true ? "Auth Required" : "Connection Error",
+                          systemImage: "exclamationmark.triangle.fill")
                         .foregroundStyle(.orange)
-                    Text("Check Moltbot is running")
+                    Text(entry.error?.contains("Token") == true ? "Set token in app" : "Check Moltbot is running")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
