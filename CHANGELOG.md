@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.1
+
+- Bundle CLI binary in app for Homebrew distribution
+
 ## 0.2.0
 
 **Custom Widgets** - Create dynamic widgets that fetch real-time data from any API endpoint.
