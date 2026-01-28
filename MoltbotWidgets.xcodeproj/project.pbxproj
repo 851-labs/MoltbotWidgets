@@ -19,6 +19,10 @@
 		A1000013242F10000000001 /* MoltbotAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000008242F10000000001 /* MoltbotAPI.swift */; };
 		A1000014242F10000000001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1000015242F10000000001 /* Assets.xcassets */; };
 		A1000016242F10000000001 /* MoltbotWidgetsExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A1000017242F10000000001 /* MoltbotWidgetsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A1000038242F10000000001 /* SharedSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000039242F10000000001 /* SharedSettings.swift */; };
+		A100003A242F10000000001 /* SharedSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000039242F10000000001 /* SharedSettings.swift */; };
+		A100003B242F10000000001 /* HealthWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100003C242F10000000001 /* HealthWidget.swift */; };
+		A100003D242F10000000001 /* UsageWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100003E242F10000000001 /* UsageWidget.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +66,9 @@
 		A100001E242F10000000001 /* MoltbotWidgetsExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MoltbotWidgetsExtension.entitlements; sourceTree = "<group>"; };
 		A100001F242F10000000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A1000020242F10000000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A1000039242F10000000001 /* SharedSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedSettings.swift; sourceTree = "<group>"; };
+		A100003C242F10000000001 /* HealthWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthWidget.swift; sourceTree = "<group>"; };
+		A100003E242F10000000001 /* UsageWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageWidget.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +119,8 @@
 			isa = PBXGroup;
 			children = (
 				A1000010242F10000000001 /* CronJobsWidget.swift */,
+				A100003C242F10000000001 /* HealthWidget.swift */,
+				A100003E242F10000000001 /* UsageWidget.swift */,
 				A1000012242F10000000001 /* MoltbotWidgetsExtensionBundle.swift */,
 				A1000015242F10000000001 /* Assets.xcassets */,
 				A100001E242F10000000001 /* MoltbotWidgetsExtension.entitlements */,
@@ -124,6 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				A1000008242F10000000001 /* MoltbotAPI.swift */,
+				A1000039242F10000000001 /* SharedSettings.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -149,6 +159,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		A100001A242F10000000001 /* MoltbotWidgetsExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A100002E242F10000000001 /* Build configuration list for PBXNativeTarget "MoltbotWidgetsExtension" */;
+			buildPhases = (
+				A100002F242F10000000001 /* Sources */,
+				A1000022242F10000000001 /* Frameworks */,
+				A1000030242F10000000001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MoltbotWidgetsExtension;
+			productName = MoltbotWidgetsExtension;
+			productReference = A1000017242F10000000001 /* MoltbotWidgetsExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		A1000029242F10000000001 /* MoltbotWidgets */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A100002A242F10000000001 /* Build configuration list for PBXNativeTarget "MoltbotWidgets" */;
@@ -167,23 +194,6 @@
 			productName = MoltbotWidgets;
 			productReference = A100001C242F10000000001 /* MoltbotWidgets.app */;
 			productType = "com.apple.product-type.application";
-		};
-		A100001A242F10000000001 /* MoltbotWidgetsExtension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A100002E242F10000000001 /* Build configuration list for PBXNativeTarget "MoltbotWidgetsExtension" */;
-			buildPhases = (
-				A100002F242F10000000001 /* Sources */,
-				A1000022242F10000000001 /* Frameworks */,
-				A1000030242F10000000001 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = MoltbotWidgetsExtension;
-			productName = MoltbotWidgetsExtension;
-			productReference = A1000017242F10000000001 /* MoltbotWidgetsExtension.appex */;
-			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -250,6 +260,7 @@
 				A1000003242F10000000001 /* ContentView.swift in Sources */,
 				A1000005242F10000000001 /* SettingsView.swift in Sources */,
 				A1000007242F10000000001 /* MoltbotAPI.swift in Sources */,
+				A1000038242F10000000001 /* SharedSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,8 +269,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				A100000F242F10000000001 /* CronJobsWidget.swift in Sources */,
+				A100003B242F10000000001 /* HealthWidget.swift in Sources */,
+				A100003D242F10000000001 /* UsageWidget.swift in Sources */,
 				A1000011242F10000000001 /* MoltbotWidgetsExtensionBundle.swift in Sources */,
 				A1000013242F10000000001 /* MoltbotAPI.swift in Sources */,
+				A100003A242F10000000001 /* SharedSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -395,20 +409,23 @@
 		A1000034242F10000000001 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_ENTITLEMENTS = MoltbotWidgets/MoltbotWidgets.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = C4M7D4G7LG;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MoltbotWidgets/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Moltbot Widgets";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -416,6 +433,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.moltbot.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
@@ -424,20 +442,23 @@
 		A1000035242F10000000001 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_ENTITLEMENTS = MoltbotWidgets/MoltbotWidgets.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = C4M7D4G7LG;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MoltbotWidgets/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Moltbot Widgets";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -445,6 +466,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.moltbot.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
@@ -458,7 +480,7 @@
 				CODE_SIGN_ENTITLEMENTS = MoltbotWidgetsExtension/MoltbotWidgetsExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = C4M7D4G7LG;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MoltbotWidgetsExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Moltbot Widgets";
@@ -471,6 +493,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.moltbot.widgets.extension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -485,7 +508,7 @@
 				CODE_SIGN_ENTITLEMENTS = MoltbotWidgetsExtension/MoltbotWidgetsExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = C4M7D4G7LG;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MoltbotWidgetsExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Moltbot Widgets";
@@ -498,6 +521,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.moltbot.widgets.extension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -507,15 +531,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A1000031242F10000000001 /* Build configuration list for PBXProject "MoltbotWidgets" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A1000032242F10000000001 /* Debug */,
-				A1000033242F10000000001 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		A100002A242F10000000001 /* Build configuration list for PBXNativeTarget "MoltbotWidgets" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -530,6 +545,15 @@
 			buildConfigurations = (
 				A1000036242F10000000001 /* Debug */,
 				A1000037242F10000000001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A1000031242F10000000001 /* Build configuration list for PBXProject "MoltbotWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1000032242F10000000001 /* Debug */,
+				A1000033242F10000000001 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

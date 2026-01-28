@@ -5,5 +5,7 @@ import SwiftUI
 struct MoltbotWidgetsExtensionBundle: WidgetBundle {
     var body: some Widget {
         CronJobsWidget()
+        HealthWidget()
+        UsageWidget()
     }
 }

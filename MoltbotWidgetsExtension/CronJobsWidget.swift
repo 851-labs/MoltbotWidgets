@@ -44,13 +44,10 @@ struct CronJobsProvider: TimelineProvider {
     }
 
     private func fetchCronStatus() async -> CronJobsEntry {
-        // Default settings
-        let host = "127.0.0.1"
-        let port = "18789"
-        let useSecure = false
-
-        // Try to read token from moltbot config file
-        let token = readGatewayToken()
+        let host = SharedSettings.host
+        let port = SharedSettings.port
+        let token = SharedSettings.token
+        let useSecure = SharedSettings.useSecureConnection
 
         let api = MoltbotAPI(host: host, port: port, token: token, useSecure: useSecure)
 
@@ -83,21 +80,6 @@ struct CronJobsProvider: TimelineProvider {
         }
     }
 
-    private func readGatewayToken() -> String? {
-        // Try to read token from moltbot config file
-        let homeDir = FileManager.default.homeDirectoryForCurrentUser
-        let configPath = homeDir.appendingPathComponent(".clawdbot/clawdbot.json")
-
-        guard let data = try? Data(contentsOf: configPath),
-              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-              let gateway = json["gateway"] as? [String: Any],
-              let auth = gateway["auth"] as? [String: Any],
-              let token = auth["token"] as? String else {
-            return nil
-        }
-
-        return token
-    }
 }
 
 struct CronJobsWidgetEntryView: View {
