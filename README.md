@@ -17,7 +17,7 @@
 </p>
 
 <p align="center">
-  <img src="images/widgets.png" width="600" alt="Moltbot Widgets">
+  <img src="images/widgets.png" alt="Moltbot Widgets">
 </p>
 
 ## Widgets
