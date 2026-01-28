@@ -18,7 +18,7 @@ macOS desktop widgets for monitoring your Moltbot gateway.
 ### Homebrew
 
 ```bash
-brew install 851-labs/tap/moltbot-widgets
+brew install --cask 851-labs/tap/moltbot-widgets
 ```
 
 ### Manual
