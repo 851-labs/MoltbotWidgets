@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1
+
+- Fix widgets not sharing settings with main app (re-enable App Groups)
+- Fix widget extension registration for Homebrew installs
+
 ## 0.1.0
 
 Initial release.
