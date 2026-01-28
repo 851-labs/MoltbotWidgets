@@ -15,6 +15,14 @@ macOS desktop widgets for monitoring your Moltbot gateway.
 
 ## Installation
 
+### Homebrew
+
+```bash
+brew install 851-labs/tap/moltbot-widgets
+```
+
+### Manual
+
 1. Download `MoltbotWidgets.dmg` from the [latest release](https://github.com/851-labs/MoltbotWidgets/releases/latest)
 2. Open the DMG and drag MoltbotWidgets to Applications
 3. Launch MoltbotWidgets from Applications
