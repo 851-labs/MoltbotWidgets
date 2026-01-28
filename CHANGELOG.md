@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.2
+
+- Add app icon
+- Fix cost text truncation in Usage widget
+
 ## 0.1.1
 
 - Fix widgets not sharing settings with main app (re-enable App Groups)
