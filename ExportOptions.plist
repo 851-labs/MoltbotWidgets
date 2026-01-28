@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>method</key>
+	<string>developer-id</string>
+	<key>teamID</key>
+	<string>C4M7D4G7LG</string>
+	<key>provisioningProfiles</key>
+	<dict>
+		<key>com.moltbot.widgets</key>
+		<string>Moltbot Widgets Profile</string>
+		<key>com.moltbot.widgets.extension</key>
+		<string>Moltbot Widgets Extension Profile</string>
+	</dict>
+</dict>
+</plist>
