@@ -480,6 +480,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = C4M7D4G7LG;
+				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MoltbotWidgetsExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Moltbot Widgets";
@@ -508,6 +509,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = C4M7D4G7LG;
+				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MoltbotWidgetsExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Moltbot Widgets";
