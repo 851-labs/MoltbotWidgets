@@ -30,12 +30,22 @@ hdiutil create -volname "MoltbotWidgets" \
 
 ## Release Process
 
-Push a tag matching `v*` pattern to trigger the GitHub Actions release workflow:
-```bash
-git tag v0.1.2 && git push origin v0.1.2
-```
+1. **Bump version** in `project.pbxproj` (search for `MARKETING_VERSION`)
+2. **Update CHANGELOG.md**
+3. **Commit and push**
+4. **Tag and push** to trigger CI:
+   ```bash
+   git tag v0.1.2 && git push origin v0.1.2
+   ```
+5. **Wait for GitHub Actions** to build, notarize, and publish the release
+6. **Update Homebrew tap** (`851-labs/homebrew-tap`):
+   ```bash
+   # Get SHA256 of new DMG
+   curl -sL "https://github.com/851-labs/MoltbotWidgets/releases/download/v0.1.2/MoltbotWidgets.dmg" | shasum -a 256
 
-After release, update the Homebrew tap (`851-labs/homebrew-tap`) with new version and SHA256.
+   # Edit Casks/moltbot-widgets.rb - update version and sha256
+   # Commit and push to homebrew-tap repo
+   ```
 
 ## Architecture
 
