@@ -39,3 +39,6 @@ fastlane/test_output
 
 # Code Injection
 iOSInjectionProject/
+
+# Reference code for LLMs
+/references/
