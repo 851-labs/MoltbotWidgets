@@ -28,6 +28,15 @@ jobs:
           DEVELOPER_ID_APPLICATION: ${{ secrets.DEVELOPER_ID_APPLICATION }}
         run: appdrop setup-ci
 
+      - name: Install provisioning profiles
+        env:
+          PROVISIONING_PROFILE_APP: ${{ secrets.PROVISIONING_PROFILE_APP }}
+          PROVISIONING_PROFILE_EXTENSION: ${{ secrets.PROVISIONING_PROFILE_EXTENSION }}
+        run: |
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          echo "$PROVISIONING_PROFILE_APP" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/MoltbotWidgets.provisionprofile
+          echo "$PROVISIONING_PROFILE_EXTENSION" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/MoltbotWidgetsExtension.provisionprofile
+
       - name: Release
         env:
           DEVELOPER_ID_APPLICATION: ${{ secrets.DEVELOPER_ID_APPLICATION }}
