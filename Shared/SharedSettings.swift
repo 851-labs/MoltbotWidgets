@@ -1,10 +1,10 @@
 import Foundation
 
 enum SharedSettings {
-    // Use standard UserDefaults - App Groups require proper provisioning
-    // which isn't available in dev builds. The widget will read from config file.
+    private static let appGroupID = "group.com.moltbot.widgets"
+
     private static var sharedDefaults: UserDefaults {
-        .standard
+        UserDefaults(suiteName: appGroupID) ?? .standard
     }
 
     // MARK: - Keys
