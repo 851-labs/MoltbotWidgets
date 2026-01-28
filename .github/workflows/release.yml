@@ -37,15 +37,54 @@ jobs:
           echo "$PROVISIONING_PROFILE_APP" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/MoltbotWidgets.provisionprofile
           echo "$PROVISIONING_PROFILE_EXTENSION" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/MoltbotWidgetsExtension.provisionprofile
 
-      - name: Release
+      - name: Archive
         env:
           DEVELOPER_ID_APPLICATION: ${{ secrets.DEVELOPER_ID_APPLICATION }}
+        run: |
+          xcodebuild -project MoltbotWidgets.xcodeproj \
+            -scheme MoltbotWidgets \
+            -configuration Release \
+            -archivePath build/MoltbotWidgets.xcarchive \
+            CODE_SIGN_STYLE=Manual \
+            "CODE_SIGN_IDENTITY=$DEVELOPER_ID_APPLICATION" \
+            archive
+
+      - name: Export
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath build/MoltbotWidgets.xcarchive \
+            -exportPath build/export \
+            -exportOptionsPlist ExportOptions.plist
+
+      - name: Create DMG
+        run: |
+          hdiutil create -volname "MoltbotWidgets" \
+            -srcfolder build/export/MoltbotWidgets.app \
+            -ov -format UDZO \
+            build/MoltbotWidgets.dmg
+
+      - name: Notarize
+        env:
           APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
-        run: appdrop release --verbose --export-options ExportOptions.plist
+        run: |
+          echo "$APP_STORE_CONNECT_PRIVATE_KEY" > /tmp/AuthKey.p8
+          xcrun notarytool submit build/MoltbotWidgets.dmg \
+            --key /tmp/AuthKey.p8 \
+            --key-id "$APP_STORE_CONNECT_KEY_ID" \
+            --issuer "$APP_STORE_CONNECT_ISSUER_ID" \
+            --wait
+          rm /tmp/AuthKey.p8
+
+      - name: Staple
+        run: xcrun stapler staple build/MoltbotWidgets.dmg
 
       - name: Publish GitHub release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: appdrop publish
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            build/MoltbotWidgets.dmg \
+            --title "${{ github.ref_name }}" \
+            --notes "Release ${{ github.ref_name }}"
