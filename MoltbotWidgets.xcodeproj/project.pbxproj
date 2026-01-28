@@ -23,6 +23,18 @@
 		A100003A242F10000000001 /* SharedSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000039242F10000000001 /* SharedSettings.swift */; };
 		A100003B242F10000000001 /* HealthWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100003C242F10000000001 /* HealthWidget.swift */; };
 		A100003D242F10000000001 /* UsageWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100003E242F10000000001 /* UsageWidget.swift */; };
+		A1000040242F10000000001 /* CustomWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000041242F10000000001 /* CustomWidget.swift */; };
+		A1000042242F10000000001 /* CustomWidgetIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000043242F10000000001 /* CustomWidgetIntent.swift */; };
+		A1000044242F10000000001 /* TemplateRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000045242F10000000001 /* TemplateRenderer.swift */; };
+		A1000046242F10000000001 /* StatusTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000047242F10000000001 /* StatusTemplateView.swift */; };
+		A1000048242F10000000001 /* NumberTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000049242F10000000001 /* NumberTemplateView.swift */; };
+		A100004A242F10000000001 /* GaugeTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100004B242F10000000001 /* GaugeTemplateView.swift */; };
+		A100004C242F10000000001 /* ListTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100004D242F10000000001 /* ListTemplateView.swift */; };
+		A100004E242F10000000001 /* TextTemplateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A100004F242F10000000001 /* TextTemplateView.swift */; };
+		A1000050242F10000000001 /* WidgetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000051242F10000000001 /* WidgetConfig.swift */; };
+		A1000052242F10000000001 /* WidgetConfigStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000053242F10000000001 /* WidgetConfigStore.swift */; };
+		A1000054242F10000000001 /* WidgetResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000055242F10000000001 /* WidgetResponse.swift */; };
+		A1000056242F10000000001 /* WidgetFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000057242F10000000001 /* WidgetFetcher.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +81,18 @@
 		A1000039242F10000000001 /* SharedSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedSettings.swift; sourceTree = "<group>"; };
 		A100003C242F10000000001 /* HealthWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthWidget.swift; sourceTree = "<group>"; };
 		A100003E242F10000000001 /* UsageWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageWidget.swift; sourceTree = "<group>"; };
+		A1000041242F10000000001 /* CustomWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomWidget.swift; sourceTree = "<group>"; };
+		A1000043242F10000000001 /* CustomWidgetIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomWidgetIntent.swift; sourceTree = "<group>"; };
+		A1000045242F10000000001 /* TemplateRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateRenderer.swift; sourceTree = "<group>"; };
+		A1000047242F10000000001 /* StatusTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusTemplateView.swift; sourceTree = "<group>"; };
+		A1000049242F10000000001 /* NumberTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberTemplateView.swift; sourceTree = "<group>"; };
+		A100004B242F10000000001 /* GaugeTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaugeTemplateView.swift; sourceTree = "<group>"; };
+		A100004D242F10000000001 /* ListTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTemplateView.swift; sourceTree = "<group>"; };
+		A100004F242F10000000001 /* TextTemplateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextTemplateView.swift; sourceTree = "<group>"; };
+		A1000051242F10000000001 /* WidgetConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetConfig.swift; sourceTree = "<group>"; };
+		A1000053242F10000000001 /* WidgetConfigStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetConfigStore.swift; sourceTree = "<group>"; };
+		A1000055242F10000000001 /* WidgetResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetResponse.swift; sourceTree = "<group>"; };
+		A1000057242F10000000001 /* WidgetFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetFetcher.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +145,9 @@
 				A1000010242F10000000001 /* CronJobsWidget.swift */,
 				A100003C242F10000000001 /* HealthWidget.swift */,
 				A100003E242F10000000001 /* UsageWidget.swift */,
+				A1000041242F10000000001 /* CustomWidget.swift */,
+				A1000043242F10000000001 /* CustomWidgetIntent.swift */,
+				A1000058242F10000000001 /* Templates */,
 				A1000012242F10000000001 /* MoltbotWidgetsExtensionBundle.swift */,
 				A1000015242F10000000001 /* Assets.xcassets */,
 				A100001E242F10000000001 /* MoltbotWidgetsExtension.entitlements */,
@@ -129,11 +156,28 @@
 			path = MoltbotWidgetsExtension;
 			sourceTree = "<group>";
 		};
+		A1000058242F10000000001 /* Templates */ = {
+			isa = PBXGroup;
+			children = (
+				A1000045242F10000000001 /* TemplateRenderer.swift */,
+				A1000047242F10000000001 /* StatusTemplateView.swift */,
+				A1000049242F10000000001 /* NumberTemplateView.swift */,
+				A100004B242F10000000001 /* GaugeTemplateView.swift */,
+				A100004D242F10000000001 /* ListTemplateView.swift */,
+				A100004F242F10000000001 /* TextTemplateView.swift */,
+			);
+			path = Templates;
+			sourceTree = "<group>";
+		};
 		A1000026242F10000000001 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
 				A1000008242F10000000001 /* MoltbotAPI.swift */,
 				A1000039242F10000000001 /* SharedSettings.swift */,
+				A1000051242F10000000001 /* WidgetConfig.swift */,
+				A1000053242F10000000001 /* WidgetConfigStore.swift */,
+				A1000055242F10000000001 /* WidgetResponse.swift */,
+				A1000057242F10000000001 /* WidgetFetcher.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -271,6 +315,18 @@
 				A100000F242F10000000001 /* CronJobsWidget.swift in Sources */,
 				A100003B242F10000000001 /* HealthWidget.swift in Sources */,
 				A100003D242F10000000001 /* UsageWidget.swift in Sources */,
+				A1000040242F10000000001 /* CustomWidget.swift in Sources */,
+				A1000042242F10000000001 /* CustomWidgetIntent.swift in Sources */,
+				A1000044242F10000000001 /* TemplateRenderer.swift in Sources */,
+				A1000046242F10000000001 /* StatusTemplateView.swift in Sources */,
+				A1000048242F10000000001 /* NumberTemplateView.swift in Sources */,
+				A100004A242F10000000001 /* GaugeTemplateView.swift in Sources */,
+				A100004C242F10000000001 /* ListTemplateView.swift in Sources */,
+				A100004E242F10000000001 /* TextTemplateView.swift in Sources */,
+				A1000050242F10000000001 /* WidgetConfig.swift in Sources */,
+				A1000052242F10000000001 /* WidgetConfigStore.swift in Sources */,
+				A1000054242F10000000001 /* WidgetResponse.swift in Sources */,
+				A1000056242F10000000001 /* WidgetFetcher.swift in Sources */,
 				A1000011242F10000000001 /* MoltbotWidgetsExtensionBundle.swift in Sources */,
 				A1000013242F10000000001 /* MoltbotAPI.swift in Sources */,
 				A100003A242F10000000001 /* SharedSettings.swift in Sources */,
@@ -430,7 +486,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 0.1.2;
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.moltbot.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -462,7 +518,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 0.1.2;
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.moltbot.widgets;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Moltbot Widgets Profile";
@@ -491,7 +547,7 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				MARKETING_VERSION = 0.1.2;
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.moltbot.widgets.extension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -520,7 +576,7 @@
 					"@executable_path/../Frameworks",
 					"@executable_path/../../../../Frameworks",
 				);
-				MARKETING_VERSION = 0.1.2;
+				MARKETING_VERSION = 0.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.moltbot.widgets.extension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Moltbot Widgets Extension Profile";

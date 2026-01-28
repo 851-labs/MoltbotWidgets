@@ -27,6 +27,7 @@
 | **Cron Jobs** | Scheduled task count and scheduler status |
 | **Health** | Gateway status, uptime, version, and channel connectivity |
 | **Usage** | 30-day API costs and token usage |
+| **Custom** | Display real-time data from any API endpoint |
 
 ## Installation
 
@@ -62,7 +63,70 @@ open MoltbotWidgets.xcodeproj
 # Build and run with ⌘R
 ```
 
+## Custom Widgets
+
+Create widgets that display real-time data from any API endpoint.
+
+### Moltbot Integration
+
+Enable Moltbot to create widgets for you:
+
+```bash
+moltbot-widgets skill install
+```
+
+Then ask Moltbot things like:
+- "Create a widget showing my server status"
+- "Add a widget for my GitHub PR count"
+- "Make a CPU usage widget"
+
+### Manual Widget Creation
+
+```bash
+# Create a widget
+moltbot-widgets create \
+  --name "My Widget" \
+  --url "https://api.example.com/widget" \
+  --header "Authorization: Bearer token" \
+  --interval 5
+
+# Add to desktop: Right-click → Edit Widgets → MoltbotWidgets → Custom Widget
+```
+
+### CLI Commands
+
+```bash
+moltbot-widgets create    # Create a new widget
+moltbot-widgets list      # List all widgets
+moltbot-widgets update    # Update a widget
+moltbot-widgets delete    # Delete a widget
+moltbot-widgets validate  # Validate a URL
+moltbot-widgets refresh   # Force refresh widgets
+moltbot-widgets schema    # Show schema documentation
+moltbot-widgets skill     # Manage Moltbot skill
+```
+
+### Widget Schema
+
+Your API endpoint should return JSON like:
+
+```json
+{
+  "type": "status",
+  "data": {
+    "icon": "checkmark.circle.fill",
+    "iconColor": "green",
+    "title": "Service Status",
+    "value": "Healthy"
+  }
+}
+```
+
+Widget types: `status`, `number`, `gauge`, `list`, `text`
+
+See [schema/README.md](./schema/README.md) for full documentation.
+
 ## Requirements
 
 - macOS 14.0+
-- Moltbot gateway running locally or remotely
+- Moltbot gateway running locally or remotely (for gateway widgets)

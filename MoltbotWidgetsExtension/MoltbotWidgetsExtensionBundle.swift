@@ -7,5 +7,6 @@ struct MoltbotWidgetsExtensionBundle: WidgetBundle {
         CronJobsWidget()
         HealthWidget()
         UsageWidget()
+        CustomWidget()
     }
 }

@@ -5,8 +5,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Build Commands
 
 ```bash
-# Build debug
+# Build debug (Xcode)
 xcodebuild -scheme MoltbotWidgets -configuration Debug build
+
+# Build CLI (Swift Package Manager)
+swift build
 
 # Build release archive
 xcodebuild -project MoltbotWidgets.xcodeproj \
@@ -49,14 +52,19 @@ hdiutil create -volname "MoltbotWidgets" \
 
 ## Architecture
 
-### Two Targets
+### Three Targets
 - **MoltbotWidgets** (app) - Main macOS app with settings UI
-- **MoltbotWidgetsExtension** (widget) - WidgetKit extension with 3 widgets
+- **MoltbotWidgetsExtension** (widget) - WidgetKit extension with 4 widgets (Cron, Health, Usage, Custom)
+- **MoltbotWidgetsCLI** (cli) - Swift Argument Parser CLI for managing custom widgets
 
 ### Shared Code (`Shared/`)
-Both targets share:
+Both app and extension share:
 - `MoltbotAPI.swift` - Actor-based WebSocket RPC client for Moltbot gateway
 - `SharedSettings.swift` - Configuration via App Groups (`group.com.moltbot.widgets`)
+- `WidgetConfig.swift` - Custom widget configuration model
+- `WidgetConfigStore.swift` - Persistence for custom widget configs
+- `WidgetResponse.swift` - Widget JSON response models (status, number, gauge, list, text)
+- `WidgetFetcher.swift` - HTTP client for fetching widget data
 
 ### Data Flow
 1. User configures connection in main app (host, port, token)
@@ -74,11 +82,17 @@ WebSocket RPC with custom handshake:
 ### Widget Refresh
 - Cron Jobs & Health: 5 minutes
 - Usage: 15 minutes
+- Custom: User-configurable (1-60 minutes)
 
 ## Key Files
 
 - `ExportOptions.plist` - Developer ID export with provisioning profile mapping
 - `.github/workflows/release.yml` - CI/CD: archive, export, DMG, notarize, staple, GitHub release
+- `Package.swift` - Swift Package Manager manifest for CLI
+- `MoltbotWidgetsCLI/` - CLI commands (create, list, update, delete, validate, refresh, schema, skill)
+- `MoltbotWidgetsExtension/Templates/` - SwiftUI template views for custom widget types
+- `schema/widget.v1.json` - JSON Schema for widget API responses
+- `skills/moltbot-widgets/SKILL.md` - Moltbot skill definition
 
 ## Entitlements
 

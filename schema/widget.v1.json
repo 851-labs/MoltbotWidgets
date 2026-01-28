@@ -1,0 +1,286 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/851-labs/MoltbotWidgets/main/schema/widget.v1.json",
+  "title": "Moltbot Widget Response",
+  "description": "JSON schema for Moltbot widget API responses. Your API endpoint should return JSON matching this schema.",
+  "type": "object",
+  "required": ["type", "data"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Optional schema reference for validation"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["status", "number", "gauge", "list", "text"],
+      "description": "Widget template type"
+    },
+    "data": {
+      "type": "object",
+      "description": "Widget data - shape depends on the type field"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "type": { "const": "status" } },
+        "required": ["type"]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "#/$defs/statusData"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "type": { "const": "number" } },
+        "required": ["type"]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "#/$defs/numberData"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "type": { "const": "gauge" } },
+        "required": ["type"]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "#/$defs/gaugeData"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "type": { "const": "list" } },
+        "required": ["type"]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "#/$defs/listData"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "type": { "const": "text" } },
+        "required": ["type"]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "#/$defs/textData"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "color": {
+      "type": "string",
+      "description": "Color value - either a hex color (#RRGGBB) or a named color",
+      "pattern": "^(#[0-9A-Fa-f]{6}|red|orange|yellow|green|mint|teal|cyan|blue|indigo|purple|pink|brown|gray|primary|secondary)$"
+    },
+    "sfSymbol": {
+      "type": "string",
+      "description": "SF Symbol name (e.g., 'checkmark.circle.fill', 'server.rack')",
+      "pattern": "^[a-z0-9.]+$"
+    },
+    "statusData": {
+      "type": "object",
+      "description": "Data for status widget - displays icon, title, subtitle, value, and footer",
+      "required": ["title"],
+      "properties": {
+        "icon": {
+          "$ref": "#/$defs/sfSymbol",
+          "description": "SF Symbol name for the icon"
+        },
+        "iconColor": {
+          "$ref": "#/$defs/color",
+          "description": "Color of the icon"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Main title text"
+        },
+        "subtitle": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Secondary text below the title"
+        },
+        "value": {
+          "type": "string",
+          "maxLength": 20,
+          "description": "Status value (e.g., 'Healthy', 'Down', 'Passing')"
+        },
+        "footer": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Footer text at the bottom"
+        }
+      },
+      "additionalProperties": false
+    },
+    "numberData": {
+      "type": "object",
+      "description": "Data for number widget - displays a large number with optional trend",
+      "required": ["value"],
+      "properties": {
+        "icon": {
+          "$ref": "#/$defs/sfSymbol",
+          "description": "SF Symbol name for the icon"
+        },
+        "iconColor": {
+          "$ref": "#/$defs/color",
+          "description": "Color of the icon"
+        },
+        "value": {
+          "oneOf": [
+            { "type": "string" },
+            { "type": "number" }
+          ],
+          "description": "The number value to display"
+        },
+        "unit": {
+          "type": "string",
+          "maxLength": 10,
+          "description": "Unit label (e.g., 'PRs', 'ms', '%')"
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 30,
+          "description": "Description label for the number"
+        },
+        "trend": {
+          "type": "string",
+          "enum": ["up", "down", "neutral"],
+          "description": "Trend direction indicator"
+        },
+        "trendValue": {
+          "type": "string",
+          "maxLength": 10,
+          "description": "Trend value text (e.g., '+3', '-5%')"
+        }
+      },
+      "additionalProperties": false
+    },
+    "gaugeData": {
+      "type": "object",
+      "description": "Data for gauge widget - displays a progress ring or bar",
+      "required": ["value", "max"],
+      "properties": {
+        "value": {
+          "type": "number",
+          "description": "Current value"
+        },
+        "max": {
+          "type": "number",
+          "description": "Maximum value"
+        },
+        "label": {
+          "type": "string",
+          "maxLength": 30,
+          "description": "Label for the gauge"
+        },
+        "color": {
+          "$ref": "#/$defs/color",
+          "description": "Color of the gauge"
+        },
+        "showPercentage": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to show percentage in the center"
+        }
+      },
+      "additionalProperties": false
+    },
+    "listData": {
+      "type": "object",
+      "description": "Data for list widget - displays a list of items",
+      "required": ["items"],
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 30,
+          "description": "Title for the list"
+        },
+        "items": {
+          "type": "array",
+          "maxItems": 5,
+          "description": "List items (max 5)",
+          "items": {
+            "$ref": "#/$defs/listItem"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "listItem": {
+      "type": "object",
+      "description": "A single item in a list widget",
+      "required": ["title"],
+      "properties": {
+        "icon": {
+          "$ref": "#/$defs/sfSymbol",
+          "description": "SF Symbol name for the item icon"
+        },
+        "iconColor": {
+          "$ref": "#/$defs/color",
+          "description": "Color of the item icon"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Item title"
+        },
+        "subtitle": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Item subtitle"
+        },
+        "value": {
+          "type": "string",
+          "maxLength": 15,
+          "description": "Item value displayed on the right"
+        }
+      },
+      "additionalProperties": false
+    },
+    "textData": {
+      "type": "object",
+      "description": "Data for text widget - displays text content",
+      "required": ["body"],
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 30,
+          "description": "Title text"
+        },
+        "body": {
+          "type": "string",
+          "maxLength": 280,
+          "description": "Main body text"
+        },
+        "footer": {
+          "type": "string",
+          "maxLength": 50,
+          "description": "Footer text"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
