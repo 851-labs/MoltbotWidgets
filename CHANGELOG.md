@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.2
+
+- Fix widget extension signing (don't use --deep when re-signing app)
+
 ## 0.2.1
 
 - Bundle CLI binary in app for Homebrew distribution

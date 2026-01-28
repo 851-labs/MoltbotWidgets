@@ -66,14 +66,16 @@ jobs:
           # Copy CLI binary into app bundle
           cp .build/release/moltbot-widgets build/export/MoltbotWidgets.app/Contents/Resources/
 
-          # Sign the CLI binary
+          # Sign the CLI binary with hardened runtime
           codesign --force --options runtime \
             --sign "$DEVELOPER_ID_APPLICATION" \
             build/export/MoltbotWidgets.app/Contents/Resources/moltbot-widgets
 
-          # Re-sign the app bundle to include the new binary
-          codesign --force --deep --options runtime \
+          # Re-sign only the main app (not --deep) to update the seal
+          # This preserves the extension's signature and entitlements
+          codesign --force --options runtime \
             --sign "$DEVELOPER_ID_APPLICATION" \
+            --entitlements MoltbotWidgets/MoltbotWidgets.entitlements \
             build/export/MoltbotWidgets.app
 
       - name: Create DMG
