@@ -565,7 +565,7 @@ struct AboutDetailView: View {
             }
 
             Section {
-                Link(destination: URL(string: "https://github.com/dylanplayer/MoltbotWidgets")!) {
+                Link(destination: URL(string: "https://github.com/851-labs/MoltbotWidgets")!) {
                     Label("View on GitHub", systemImage: "link")
                 }
 
