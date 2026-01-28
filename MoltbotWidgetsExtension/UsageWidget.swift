@@ -150,6 +150,8 @@ struct UsageWidgetEntryView: View {
 
                 Text(entry.formattedCost)
                     .font(.system(size: 28, weight: .bold, design: .rounded))
+                    .minimumScaleFactor(0.6)
+                    .lineLimit(1)
 
                 Text("\(entry.days) Day Cost")
                     .font(.caption)
@@ -172,6 +174,8 @@ struct UsageWidgetEntryView: View {
 
                 Text(entry.formattedCost)
                     .font(.system(size: 32, weight: .bold, design: .rounded))
+                    .minimumScaleFactor(0.6)
+                    .lineLimit(1)
 
                 Text("\(entry.days) Day Cost")
                     .font(.subheadline)
