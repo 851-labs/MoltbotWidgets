@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.3
+
+- Remove horizontal progress bar from medium gauge widget (keep only circular gauge)
+
 ## 0.2.2
 
 - Fix widget extension signing (don't use --deep when re-signing app)

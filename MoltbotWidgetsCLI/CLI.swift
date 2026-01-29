@@ -6,7 +6,7 @@ struct MoltbotWidgetsCLI: AsyncParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "moltbot-widgets",
         abstract: "Create and manage dynamic macOS widgets",
-        version: "0.2.2",
+        version: "0.2.3",
         subcommands: [
             CreateCommand.self,
             ListCommand.self,

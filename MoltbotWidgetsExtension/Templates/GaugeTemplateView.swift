@@ -89,25 +89,6 @@ struct GaugeTemplateView: View {
                 Text("\(formatValue(data.value)) / \(formatValue(data.max))")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
-
-                Spacer()
-
-                // Progress bar
-                GeometryReader { geometry in
-                    ZStack(alignment: .leading) {
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(gaugeColor.opacity(0.2))
-                            .frame(height: 8)
-
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(gaugeColor)
-                            .frame(
-                                width: geometry.size.width * min(1.0, data.value / data.max),
-                                height: 8
-                            )
-                    }
-                }
-                .frame(height: 8)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
